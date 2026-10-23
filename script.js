@@ -23,14 +23,15 @@
    * KONFIGURASI FIREBASE
    * ===================================================================== */
   var FIREBASE_CONFIG = {
-    apiKey:            "YOUR_API_KEY",
-    authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
-    databaseURL:       "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-    projectId:         "YOUR_PROJECT_ID",
-    storageBucket:     "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId:             "YOUR_APP_ID"
-  };
+  apiKey: "AIzaSyAIW6HZPgOm1zJSr_VLrx-cgE9XnsR4GSk",
+  authDomain: "tka-liveboard.firebaseapp.com",
+  databaseURL: "https://tka-liveboard-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "tka-liveboard",
+  storageBucket: "tka-liveboard.firebasestorage.app",
+  messagingSenderId: "891708262712",
+  appId: "1:891708262712:web:1429283b58f5624fca99cd"
+};
+
 
   var DB_ROOT = 'proctor';        
   var DEFAULT_ROOM = 'kelas-1';   
