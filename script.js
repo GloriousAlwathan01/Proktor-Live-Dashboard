@@ -434,3 +434,109 @@
   initSync();
   setInterval(renderLive, 250);
 })();
+
+/* =====================================================================
+ * KODE BARU — WELCOME SCREEN, AUDIO SAMBUTAN & TRANSISI KE DASHBOARD
+ * Berdiri sendiri (IIFE terpisah): tidak menyentuh variabel, ID, maupun
+ * logika Firebase di atas. Sinkronisasi tetap berjalan di latar belakang
+ * selama Welcome Screen tampil.
+ * ===================================================================== */
+(function () {
+  'use strict';
+ 
+  var FADE_MS = 600;                 // harus sama dengan durasi transition di style.css
+  var AUTOPLAY_ON_ADMIN = false;     // true = laptop admin juga mencoba autoplay (default: hanya TV)
+ 
+  var IS_TV = new URLSearchParams(window.location.search).get('mode') === 'tv';
+ 
+  var welcomeEl   = document.getElementById('welcomeScreen');
+  var dashboardEl = document.getElementById('dashboard');
+  var audioEl     = document.getElementById('welcomeAudio');
+  var btnAudio    = document.getElementById('btnPlayAudio');
+  var btnStart    = document.getElementById('btnStartDashboard');
+  var hintEl      = document.getElementById('audioHint');
+ 
+  var starting = false;
+ 
+  /* ---------- Audio ---------- */
+  function showHint(text) {
+    if (text) { hintEl.textContent = text; hintEl.hidden = false; }
+    else      { hintEl.hidden = true; }
+  }
+ 
+  function playAudio() {
+    var p = audioEl.play();
+    if (p && typeof p.catch === 'function') {
+      p.catch(function (err) {
+        if (err && err.name === 'NotAllowedError') {
+          // Autoplay diblokir browser → arahkan proktor menekan tombol
+          btnAudio.classList.add('attention');
+          showHint('Browser memblokir putar otomatis. Tekan “Play Suara” untuk memulai.');
+        }
+      });
+    }
+  }
+ 
+  function pauseAudio() {
+    audioEl.pause();
+  }
+ 
+  // UI tombol mengikuti status audio yang sebenarnya
+  audioEl.addEventListener('play', function () {
+    btnAudio.textContent = '⏸ Jeda Suara';
+    btnAudio.classList.remove('attention');
+    showHint('');
+  });
+  audioEl.addEventListener('pause', function () { btnAudio.textContent = '🔊 Play Suara'; });
+  audioEl.addEventListener('ended', function () { btnAudio.textContent = '🔊 Putar Ulang'; });
+  audioEl.addEventListener('error', function () {
+    btnAudio.disabled = true;
+    btnAudio.classList.remove('attention');
+    showHint('File suara-sambutan.mp3 tidak ditemukan. Letakkan di folder yang sama dengan index.html.');
+  });
+ 
+  btnAudio.addEventListener('click', function () {
+    if (audioEl.paused) playAudio(); else pauseAudio();
+  });
+ 
+  /* ---------- Transisi: Welcome Screen → Dashboard ---------- */
+  function startDashboard() {
+    if (starting) return;
+    starting = true;
+ 
+    // 1) Hentikan audio
+    audioEl.pause();
+    audioEl.currentTime = 0;
+    btnStart.blur();
+ 
+    // 2) Fade-out Welcome Screen
+    welcomeEl.classList.add('fade-out');
+ 
+    // 3) Setelah fade selesai: sembunyikan welcome, tampilkan dashboard dengan fade-in
+    setTimeout(function () {
+      welcomeEl.classList.add('is-hidden');
+ 
+      dashboardEl.classList.add('fade-in-start');     // opacity 0
+      dashboardEl.classList.remove('is-hidden');      // display: block
+      void dashboardEl.offsetWidth;                   // paksa reflow agar transisi terpicu
+      dashboardEl.classList.remove('fade-in-start');  // opacity → 1 (fade-in)
+ 
+      document.body.classList.remove('welcome-active');
+    }, FADE_MS);
+  }
+ 
+  btnStart.addEventListener('click', startDashboard);
+ 
+  /* ---------- Cegah pintasan Spasi/Enter dashboard lama saat welcome tampil ----------
+   * Listener fase-capture ini berjalan lebih dulu dan menghentikan event sebelum sampai
+   * ke handler lama (yang membuka modal token). Aktivasi tombol lewat Enter/Spasi tetap
+   * jalan karena itu aksi bawaan browser, bukan bagian dari propagasi.                */
+  document.addEventListener('keydown', function (e) {
+    if (document.body.classList.contains('welcome-active')) e.stopPropagation();
+  }, true);
+ 
+  /* ---------- Init ---------- */
+  btnStart.focus();                                  // Enter langsung bisa memulai
+  if (IS_TV || AUTOPLAY_ON_ADMIN) playAudio();       // coba autoplay (bisa diblokir browser)
+})();
+/* ======================= AKHIR KODE BARU ======================= */

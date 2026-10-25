@@ -9,7 +9,74 @@
   <title>Dashboard | TKA SMA Daarul Ilmi</title>
 </head>
 
-<body>
+<body class="welcome-active">
+
+  <!-- =====================================================================
+     KODE BARU — WELCOME SCREEN (tampil pertama kali, fullscreen)
+     ===================================================================== -->
+  <section class="welcome" id="welcomeScreen" aria-labelledby="welcomeTitle">
+    <div class="welcome-card">
+
+      <div class="welcome-brand">
+        <img src="img/logodi.png" alt="Logo Sekolah" class="logo-sekolah">
+        <defs>
+          <linearGradient id="lgw" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#3b82f6" />
+            <stop offset="1" stop-color="#1d4ed8" />
+          </linearGradient>
+        </defs>
+        <path d="M50 4 90 18v30c0 25-17 41-40 48C27 89 10 73 10 48V18z" fill="url(#lgw)" />
+        <path d="M50 30 24 42l26 12 26-12z" fill="#fff" />
+        <path d="M34 50v12c0 4 7 8 16 8s16-4 16-8V50L50 58z" fill="#bfdbfe" />
+        </svg>
+        <h1 id="welcomeTitle"><span class="rv rv-1">Selamat Datang Peserta</span> <span class="accent rv rv-2">
+            TKA</span> <span class="rv rv-3">SMA Daarul Ilmi</span></h1>
+      </div>
+
+      <div class="rules-box">
+        <h2 class="rules-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M9 11l3 3 8-8" />
+            <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9" />
+          </svg>
+          Tata Tertib Ujian
+        </h2>
+        <ol class="rules-list">
+          <li>Duduk di meja sesuai nomor peserta yang telah ditentukan.</li>
+          <li>Dilarang membawa HP, smartwatch, atau alat komunikasi lain ke meja ujian.</li>
+          <li>Kerjakan soal dengan jujur dan mandiri. Dilarang menyontek atau bekerja sama.</li>
+          <li>Token hanya diberikan oleh proktor. Jangan membagikannya kepada peserta lain.</li>
+          <li>Angkat tangan jika ada kendala teknis. Jangan memperbaiki perangkat sendiri.</li>
+          <li>Dilarang membuka tab atau aplikasi lain selama ujian berlangsung.</li>
+          <li>Dilarang meninggalkan ruangan tanpa izin pengawas.</li>
+          <li>Berhenti mengerjakan dan periksa jawaban saat waktu ujian habis.</li>
+        </ol>
+      </div>
+
+      <div class="prayer">
+        <span class="prayer-ico" aria-hidden="true">🤲</span>
+        <div class="prayer-text">
+          <strong>Sebelum memulai, mari berdoa terlebih dahulu.</strong>
+          <span>Mohon tundukkan kepala dan berdoa menurut keyakinan masing-masing, semoga diberi kemudahan, kelancaran,
+            dan hasil terbaik.</span>
+        </div>
+      </div>
+
+      <div class="welcome-actions">
+        <button class="btn-start" id="btnStartDashboard" type="button">Mulai Tampilkan Token 🚀</button>
+        <div class="audio-row">
+          <button class="btn-audio" id="btnPlayAudio" type="button">🔊 Play Suara</button>
+          <p class="audio-hint" id="audioHint" hidden></p>
+        </div>
+      </div>
+
+      <!-- Audio tersembunyi: taruh file suara-sambutan.mp3 di folder yang sama dengan index.html -->
+      <audio id="welcomeAudio" src="suara-ai-tka.mp3" preload="auto" hidden></audio>
+    </div>
+  </section>
+
+  <div id="dashboard" class="is-hidden"></div>
 
   <div class="app">
     <!-- LEFT -->
